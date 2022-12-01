@@ -30,3 +30,4 @@ yarn-error.log*
 /backend/yarn-error.log*
 /backend/.pnp
 /backend/.pnp.js
+bak/*
