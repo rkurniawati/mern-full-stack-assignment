@@ -14,7 +14,8 @@
 		// see https://github.com/github/codespaces-react/blob/main/.devcontainer/devcontainer.json
 		"codespaces": {
 			"openFiles": [
-			  "src/App.js"
+			  "src/App.js",
+			  "backend/index.js"
 			]
 		  },
 		  // Configure properties specific to VS Code.
