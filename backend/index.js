@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { MongoClient, ObjectID } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 const MONGO_URL = 'mongodb://localhost:27017';
-const MONGO_DATABASE = "dogs";
+const MONGO_DATABASE = "test"; // we're using the default test database
 
 let dbClient = null;
 const connect = async (url) => {
@@ -31,12 +31,40 @@ const getAllDogs = async () => {
     return values;
 }
 
-const deleteDog = async (tableName, id) => {
+const deleteDog = async (id) => {
     const database = await getConnection();
-    await database.collection("dogs").deleteOne({_id: ObjectID(id)});    
+    await database.collection("dogs").deleteOne({_id: ObjectId(id)});    
 }
 
-const addDog = async (tableName, name, age, breed) => {
+
+const naughtyDog = async (id) => {
+    const database = await getConnection();
+    const dog = await database.collection("dogs").find({_id: ObjectId(id)}).toArray()
+    console.log(dog.id + " " + dog.nice)
+    await database.collection("dogs").updateOne({_id: ObjectId(id) }, 
+    {
+        $set: {
+            naughty: dog.naughty + 1
+        }
+    });    
+}
+
+const niceDog = async (id) => {
+    // see https://www.mongodb.com/docs/mongodb-shell/crud/update/ for 
+    // update example
+    const database = await getConnection();
+    const dogs = await database.collection("dogs").find({_id: ObjectId(id)}).toArray()
+    console.log(id + " " + dogs.length)
+    const dog = dogs[0]
+    await database.collection("dogs").updateOne({_id: ObjectId(id) }, 
+    {
+        $set: {
+            nice: dog.nice + 1
+        }
+    });    
+}
+
+const addDog = async (name, age, breed) => {
     const database = await getConnection();
     const dogRecord = {
         "name" : name,
@@ -51,7 +79,7 @@ const routes = [
         method: 'get',
         path: '/hello',
         handler: async (req, res) => {
-            res.send("Hello!");
+            res.send("Hello!\n");
         },
     },
     {
@@ -66,8 +94,8 @@ const routes = [
         method: 'post',
         path: '/adddog',
         handler: async (req, res) => {
-            const { collection, name, age, breed } = req.body;
-            await addDog(collection, name, age, breed);
+            const { name, age, breed } = req.body;
+            await addDog(name, age, breed);
             res.status(200).json({ status: "ok"});
         },
     },
@@ -75,8 +103,26 @@ const routes = [
         method: 'post',
         path: '/deletedog',
         handler: async (req, res) => {
-            const { collection, id } = req.body;
-            await deleteDog(collection, id);
+            const { id } = req.body;
+            await deleteDog(id);
+            res.status(200).json({ status: "ok"});
+        },
+    },
+    {
+        method: 'post',
+        path: '/naughtydog',
+        handler: async (req, res) => {
+            const { id } = req.body;
+            await naughtyDog(id);
+            res.status(200).json({ status: "ok"});
+        },
+    },
+    {
+        method: 'post',
+        path: '/nicedog',
+        handler: async (req, res) => {
+            const { id } = req.body;
+            await niceDog(id);
             res.status(200).json({ status: "ok"});
         },
     },
