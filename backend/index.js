@@ -39,8 +39,13 @@ const deleteDog = async (id) => {
 
 const naughtyDog = async (id) => {
     const database = await getConnection();
-    const dog = await database.collection("dogs").find({_id: ObjectId(id)}).toArray()
-    console.log(dog.id + " " + dog.nice)
+    const dogs = await database.collection("dogs").find({_id: ObjectId(id)}).toArray()
+    console.log("Naughty " + id + " " + dogs.length)
+    if (dogs.length === 0) {
+        console.error("naughtyDog: id not found: " + id)
+        return;
+    }
+    const dog = dogs[0]
     await database.collection("dogs").updateOne({_id: ObjectId(id) }, 
     {
         $set: {
@@ -55,6 +60,10 @@ const niceDog = async (id) => {
     const database = await getConnection();
     const dogs = await database.collection("dogs").find({_id: ObjectId(id)}).toArray()
     console.log(id + " " + dogs.length)
+    if (dogs.length === 0) {
+        console.error("niceDog: id not found: " + id)
+        return;
+    }
     const dog = dogs[0]
     await database.collection("dogs").updateOne({_id: ObjectId(id) }, 
     {
@@ -112,8 +121,8 @@ const routes = [
         method: 'post',
         path: '/deletedog',
         handler: async (req, res) => {
-            const { id } = req.body;
-            await deleteDog(id);
+            const { _id } = req.body;
+            await deleteDog(_id);
             res.status(200).json({ status: "ok"});
         },
     },
@@ -121,8 +130,8 @@ const routes = [
         method: 'post',
         path: '/naughtydog',
         handler: async (req, res) => {
-            const { id } = req.body;
-            await naughtyDog(id);
+            const { _id } = req.body;
+            await naughtyDog(_id);
             res.status(200).json({ status: "ok"});
         },
     },
@@ -130,8 +139,8 @@ const routes = [
         method: 'post',
         path: '/nicedog',
         handler: async (req, res) => {
-            const { id } = req.body;
-            await niceDog(id);
+            const { _id } = req.body;
+            await niceDog(_id);
             res.status(200).json({ status: "ok"});
         },
     },
