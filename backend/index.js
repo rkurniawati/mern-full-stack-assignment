@@ -77,6 +77,13 @@ const addDog = async (name, age, breed) => {
 const routes = [
     {
         method: 'get',
+        path: '/',
+        handler: async (req, res) => {
+            res.send(`Backend server is running, listening at port: ${BACKEND_PORT}\n`);
+        },
+    },
+    {
+        method: 'get',
         path: '/hello',
         handler: async (req, res) => {
             res.send("Hello!\n");
