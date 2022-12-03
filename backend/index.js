@@ -2,15 +2,15 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient, ObjectId } from 'mongodb';
 
-const MONGO_URL = 'mongodb://localhost:27017';
+const MONGO_URL = 'mongodb://127.0.0.1:27017';
 const MONGO_DATABASE = "test"; // we're using the default test database
 
 let dbClient = null;
 const connect = async (url) => {
     let client = await MongoClient.connect(url, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });    
+        directConnection: true,
+        appName : "dogs"
+    });    
     return client;
 }
 
@@ -144,3 +144,5 @@ const start = async () => {
     
 }
 start();
+
+process.on('SIGINT', () => { console.log("Exiting!"); process.exit(); })
