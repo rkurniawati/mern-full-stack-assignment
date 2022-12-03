@@ -11,7 +11,7 @@ body {
   width: fit-content;
 }
 
-table thead > tr:nth-child(odd) td{
+table thead > tr:nth-child(odd) td, table thead > tr:nth-child(odd) th{
   background:#333;
   color: #fff;
   padding: 4px;
@@ -21,6 +21,7 @@ table tr:nth-child(odd) td{
   background:#ccc;
   padding: 4px;
 }
+
 table tr:nth-child(even) td{
    background:#fff;
    padding: 4px;

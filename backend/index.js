@@ -64,12 +64,14 @@ const niceDog = async (id) => {
     });    
 }
 
-const addDog = async (name, age, breed) => {
+const addDog = async (name, age, breed, naughty, nice) => {
     const database = await getConnection();
     const dogRecord = {
         "name" : name,
         "age" : age,
         "breed" : breed,
+        "naughty": naughty, 
+        "nice": nice
     }
     await database.collection("dogs").insertOne(dogRecord);    
 }
@@ -101,8 +103,8 @@ const routes = [
         method: 'post',
         path: '/adddog',
         handler: async (req, res) => {
-            const { name, age, breed } = req.body;
-            await addDog(name, age, breed);
+            const { name, age, breed, naughty, nice } = req.body;
+            await addDog(name, age, breed, naughty, nice);
             res.status(200).json({ status: "ok"});
         },
     },
