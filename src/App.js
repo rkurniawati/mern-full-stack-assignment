@@ -6,6 +6,17 @@ import React,{useState,useEffect} from 'react'
 /********************************************************************/
 
 function Question1() {
+  const [dogs, setDogs]  = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch("/")
+      const json = await result.json()
+      setDogs(json)
+    }
+    fetchData();
+  }, [])
+  
   return (<div>
     Dog Table
   </div>)
