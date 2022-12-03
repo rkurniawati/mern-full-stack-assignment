@@ -1,5 +1,5 @@
 db.dogs.insertMany([
- {name: "Wally", age: 10, breed: "Beagle", naughty: 100, nice: 0},
+ {name: "Bertie", age: 10, breed: "Beagle", naughty: 100, nice: 0},
  {name: "Frankie", age: 1, breed: "Beagle", naughty: 0, nice: 10},
  {name: "Charlie", age: 3, breed: "Retriever", naughty: 0, nice: 0},
  {name: "Remington", age: 4, breed: "German Shepherd", naughty: 10, nice: 5},

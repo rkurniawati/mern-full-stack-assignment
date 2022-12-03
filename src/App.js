@@ -41,7 +41,7 @@ function Question2() {
   const [dogs, setDogs]  = useState([])
 
   const deleteDog = async (dogID) => {
-    const dog = { id: dogID}
+    const dog = { _id: dogID}
     const result = await fetch("/deletedog", {
       method: 'post',
       body: JSON.stringify(dog),
@@ -157,30 +157,6 @@ return (<div>
 
 const QuestionExtra = () => {
   const [dogs, setDogs]  = useState([])
-  const [dogName, setDogName] = useState()
-  const [dogBreed, setDogBreed] = useState()
-  const [dogAge, setDogAge] = useState()
-
-  const addDog = async (dogName, dogBreed, dogAge) => {
-    const dog = { name: dogName, breed: dogBreed, age: dogAge, nice:0, naughty: 0}
-    const result = await fetch("/adddog", {
-      method: 'post',
-      body: JSON.stringify(dog),
-      headers: {
-        'Content-Type' : 'application/json'
-      }
-    })
-    if (result.status === 200) {
-      // need to reload the table
-      const result = await fetch("/dogs")
-      const json = await result.json()
-      setDogs(json)
-    } else {
-      console.error("Can't add " + dog.name)
-      console.error(dog)
-    }
-
-  }
 
   useEffect(() => {
     const fetchData = async () => {

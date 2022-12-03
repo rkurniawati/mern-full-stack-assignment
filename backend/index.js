@@ -33,6 +33,7 @@ const getAllDogs = async () => {
 
 const deleteDog = async (id) => {
     const database = await getConnection();
+    console.log("Deleting " + id)
     await database.collection("dogs").deleteOne({_id: ObjectId(id)});    
 }
 
@@ -56,10 +57,11 @@ const naughtyDog = async (id) => {
 
 const niceDog = async (id) => {
     // see https://www.mongodb.com/docs/mongodb-shell/crud/update/ for 
-    // update example
+    // update example on how you can update a record in the database
+    
     const database = await getConnection();
     const dogs = await database.collection("dogs").find({_id: ObjectId(id)}).toArray()
-    console.log(id + " " + dogs.length)
+    console.log("Nice " + id + " " + dogs.length)
     if (dogs.length === 0) {
         console.error("niceDog: id not found: " + id)
         return;
@@ -82,6 +84,7 @@ const addDog = async (name, age, breed, naughty, nice) => {
         "naughty": naughty, 
         "nice": nice
     }
+    console.log("Adding " + name + ", " + age + ", " + breed)
     await database.collection("dogs").insertOne(dogRecord);    
 }
 
@@ -91,13 +94,6 @@ const routes = [
         path: '/',
         handler: async (req, res) => {
             res.send(`Backend server is running, listening at port: ${BACKEND_PORT}\n`);
-        },
-    },
-    {
-        method: 'get',
-        path: '/hello',
-        handler: async (req, res) => {
-            res.send("Hello!\n");
         },
     },
     {
